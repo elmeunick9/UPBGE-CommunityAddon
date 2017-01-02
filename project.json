@@ -1,0 +1,1 @@
+{"bge-project": {"addons": {}, "libraries": {"shaders": "project/data/core/shaders/", "core": "project/data/core/"}, "version": "0.0.0", "name": "template", "directories": {"blenderplayer": ""}, "engine-version": "1.0", "engine-branch": "UPBGE", "settings": {"filter2D": {"Scene": {}}, "publush": {"platform": "win64", "compile": false}}}}

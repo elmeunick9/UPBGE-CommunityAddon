@@ -1,0 +1,22 @@
+uniform sampler2D bgl_RenderedTexture;
+
+const float innerRadius = .4;
+
+uniform vec2 u_resolution;
+uniform vec4 u_inner_color;
+uniform vec3 u_outer_color;
+uniform float u_scale;
+uniform float u_intensity;
+uniform float u_radius;
+
+void main(){
+    vec4 color = texture2D(bgl_RenderedTexture, gl_TexCoord[0].st) * u_inner_color;
+    vec2 relativePosition = gl_FragCoord.xy / u_resolution -.5;
+    relativePosition.y *= u_resolution.x / u_resolution.y;
+    float len = length(relativePosition);
+    
+    float vignetteOpacity = smoothstep(innerRadius, u_radius, len/u_scale) * u_intensity;
+    color.rgb = mix(color.rgb, u_outer_color, vignetteOpacity);
+
+    gl_FragColor = color;
+}
