@@ -3,18 +3,6 @@ from bge import logic
 import inspect
 
 class Fake():
-
-	""" A fake filter2D. It works diferent to the other shaders as it's not a subclass of Filter2D. Used to fake an existing filter so that you can dishable a filter without touching a lot of code. Example:
-	
-	.. code-block:: python
-	
-		if use_vignetting: self.vignetting = utils.filter2d.Vignetting()
-		else: self.vignetting = utils.filter2d.Fake(utils.filter2d.Vignetting)
-		self.vignetting.colorR = 0.5 #Doesn't rise exception even with ``use_vignetting == False``
-	
-	"""
-
-	
 	owner = None
 	slot = None
 	

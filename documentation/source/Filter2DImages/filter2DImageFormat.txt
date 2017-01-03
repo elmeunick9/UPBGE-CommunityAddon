@@ -1,0 +1,6 @@
+With gimp:
+- File -> Create From Clipboard (PrintScreenKey)
+- Croop Tool: Position (2, 51), Size(1201, 675)
+- File -> New: Width(800), Height(225)
+- CopyPaste Layer & Scale /= 3
+- Use Alignment Tool to position

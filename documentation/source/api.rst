@@ -11,6 +11,7 @@ The new Python API, `core`, provides extra functionality to the BGE API.
   api/media
   api/utils
   api/sequencer
+  api/filter2D
 
 **Module**
 

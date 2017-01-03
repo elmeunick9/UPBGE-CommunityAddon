@@ -5,6 +5,10 @@ class Vignetting(Filter2D):
 	
 	Reduces the image's brightness or saturation at the periphery compared to the image center. Has configurable inner and outer color.
 	
+	.. image:: ../Filter2DImages/Vignetting.jpg
+	
+	\\
+	
 	.. attribute:: u_inner_color
 		
 		The RGB values of the inner color. Alpha chanel unused. Default: (1.0,1.0,1.0,0.0) 

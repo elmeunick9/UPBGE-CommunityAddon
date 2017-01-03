@@ -12,6 +12,7 @@ For your convenience we have divided the documentation in two blocks: Blender UI
 
    ui
    api
+   changelog
    
 Install
 ==================

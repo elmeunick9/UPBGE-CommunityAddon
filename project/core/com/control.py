@@ -180,7 +180,34 @@ class MouseLook(bge.types.KX_PythonComponent):
 		if m != [0,0,0]: self.object.applyMovement(m, True)
 		
 		
-#HERE BE DRAGONS
+		
+class Follow(bge.types.KX_PythonComponent):
+	""" Follow another object
+	
+	.. attribute:: target
+	
+		Object to follow
+		
+		:type: |KX_GameObject|
+		
+	.. attribute:: speed
+	
+	"""
+
+	args = OrderedDict([
+		("Target", "Target.000"),
+		("Speed", 2),
+	])
+
+	def start(self, args):
+		self.target = self.object.scene.objects[args ["Target"]]
+		self.speed = args["Speed"]
+		
+	def update(self):
+		from core import utils
+		utils.moveObjectToObject(self.object, self.target, self.speed)
+		
+################################### HERE BE DRAGONS ##########################################
 camera_zoom = None
 if with_bpy:
 	for area in bpy.context.screen.areas:

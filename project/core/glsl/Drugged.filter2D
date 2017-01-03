@@ -1,0 +1,37 @@
+uniform sampler2D bgl_RenderedTexture;
+
+uniform float timer;
+
+uniform float contrast;
+uniform float brightness;
+uniform float amplitude;
+uniform float turbulence;
+
+
+void main()
+{
+    float amp = amplitude;
+    float turb = turbulence;
+    
+    vec2 texCoo = gl_TexCoord[0].st;
+    float X = gl_TexCoord[0].s-0.5;
+    float Y = gl_TexCoord[0].t-0.5;
+    
+    vec2 warp = vec2(X*(sin(timer+X*turb)*amp+0.9)+0.5,
+        Y*(cos(timer+Y*turb)*amp+0.9)+0.5);
+        
+    vec4 warped = texture2D(bgl_RenderedTexture, warp);
+    
+    //****************************************************//
+    
+    vec4 color = texture2D(bgl_RenderedTexture, gl_TexCoord[0].st);
+    
+    color = ((color-1.0)*max(contrast,0.0));
+    color = color+brightness;
+    color.r += 0.05*sin(timer);
+    color.g += 0.25*cos(timer);
+    color.b += 0.05*cos(sin(timer));
+    
+ 
+    gl_FragColor = warped+color; 
+}

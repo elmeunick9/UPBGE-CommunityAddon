@@ -4,12 +4,6 @@ This module provides you with various util functions of BGECore.
 
 .. currentmodule:: core.utils
 
-.. toctree::
-  :maxdepth: 2
-  :hidden:
-
-  filter2D
-
 Files
 -------------------
 .. autofunction:: getBlendFilepath

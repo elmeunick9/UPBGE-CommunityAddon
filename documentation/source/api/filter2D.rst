@@ -24,6 +24,8 @@ Standard shaders can be used directly creatig an instance of a 2DFilter subclass
 
 .. automodule:: core.glsl
 	:members:
+	
+.. .. Debug
 
 Installing or creating custom shaders
 -----------------------------------------------
