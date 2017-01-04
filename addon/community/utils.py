@@ -1,4 +1,5 @@
 import json, sys, os
+from .macro import *
 
 project_data = None
 project_path = None
@@ -83,11 +84,14 @@ def copytree(path_in, path_out, fileignore=lambda x: False, callback=None):
 	
 		for file in files:
 			if fileignore(file): continue
-			shutil.copyfile(root + os.sep + file, root_path + file)
+			shutil.copy(root + os.sep + file, root_path + file)
 			if callback!=None:
 				prog += os.path.getsize(root_path + file) / size
 				if callback(prog): raise TimeoutError("Time is out")
-		
+				
+	if callback!=None: callback(1)
+	
+	
 import bpy, os
 from bpy.app.handlers import persistent
 		

@@ -19,5 +19,6 @@ _templates/
 documentation/build/
 assets/
 engine/*
+release/
 *~
 project/avalon.terrain
