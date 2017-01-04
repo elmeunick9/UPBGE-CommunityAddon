@@ -1,4 +1,4 @@
-import os, time
+import os, time, shutil
 import zipfile
 
 def fileignore(file):
@@ -27,10 +27,22 @@ if __name__ == '__main__':
 		
 	
 	#data.zip
+	if os.path.isdir("tmp/template"): shutil.rmtree("tmp/")
+	os.makedirs("tmp/template")
+	shutil.copytree("project/", "tmp/template/project/")
+	shutil.copyfile("project.json", "tmp/template/project.json")
 	zipf = zipfile.ZipFile('addon/community/data.zip', 'w', zipfile.ZIP_DEFLATED)
-	zipdir('project/', zipf)
-	zipf.write('project.json')
+	
+	os.chdir("tmp/")
+	zipdir('template/project/', zipf)
+	zipf.write('template/project.json')
+	os.chdir("../")
+	shutil.rmtree("tmp/")
+	
+	os.chdir("addon/")
+	zipdir("launcher/", zipf)
 	zipf.close()
+	os.chdir("../")
 	
 	#CommunityAddon.zip
 	os.chdir("addon/")

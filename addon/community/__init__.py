@@ -26,7 +26,7 @@ def scene_loaded(dummy):
 	#Check if this is a newer installation & install if nesscesary.
 	install.check()
 	
-modulesNames = ['UIdraw', 'UIoperator', 'UIshader']
+modulesNames = ['UIdraw', 'UIoperator', 'UIshader', "game_project_export"]
  
 modulesFullNames = []
 for currentModuleName in modulesNames:

@@ -1,7 +1,7 @@
 from filter2D import Filter2D
 
 class  ToonLine(Filter2D):
-	""" Adds blur around the edges of the screen, useful for a running effect.
+	""" Like cartoon, but only the line.
 	
 	.. image:: ../Filter2DImages/ToonLine.jpg
 	

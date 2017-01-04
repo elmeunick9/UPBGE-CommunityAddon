@@ -15,6 +15,8 @@ class ProjectMenu(bpy.types.Menu):
 		if utils.project_data != None:
 			self.layout.operator(ExploreProjectDirectory.bl_idname, text="Explore Project Directory", icon='FILE_FOLDER')
 			self.layout.operator(SaveProjectAs.bl_idname, text="Save Project As ...", icon='SAVE_AS')
+			self.layout.separator()
+			self.layout.operator("wm.export_game_project", text="Export Game Project", icon='SAVE_AS')
 		
 def fileMenuDraw(self, context):
 	

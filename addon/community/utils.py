@@ -44,6 +44,49 @@ def checkProjectFile():
 			if project_data == None: return False
 		else: return False
 	return True
+
+def get_directory_size(start_path = '.', fileignore=lambda x: False):
+	total_size = 0
+	for dirpath, dirnames, filenames in os.walk(start_path):
+		for f in filenames:
+			if fileignore(f): continue
+			fp = os.path.join(dirpath, f)
+			total_size += os.path.getsize(fp)
+	return total_size
+	
+import platform, shutil
+def getPlatformCode():
+	name = "WIN" if platform.system() == "Windows" else "LIN" if platform.system() == "Linux" else "MACOS"
+	if name != "MACOS":
+		if platform.machine().endswith('64'): name += "64"
+		else: name += "32"
+	return name
+	
+def copytree(path_in, path_out, fileignore=lambda x: False, callback=None):
+	path_in = os.path.normpath(path_in) + os.sep
+	path_out = os.path.normpath(path_out) + os.sep
+	if not os.path.isabs(path_out):
+		path_out = os.path.normpath(bpy.data.filepath + ".." + os.sep + path_out) + os.sep
+
+	size = get_directory_size(path_in)
+	prog = 0
+	
+	if not os.path.isdir(path_out): os.makedirs(path_out)
+	
+	for root, dirs, files in os.walk(path_in):
+		abs = os.path.commonprefix([root, path_in])
+		root_path = path_out + root[len(abs):] + os.sep
+		
+		for dir in dirs:
+			if fileignore(dir): continue
+			os.makedirs(root_path + dir)
+	
+		for file in files:
+			if fileignore(file): continue
+			shutil.copyfile(root + os.sep + file, root_path + file)
+			if callback!=None:
+				prog += os.path.getsize(root_path + file) / size
+				if callback(prog): raise TimeoutError("Time is out")
 		
 import bpy, os
 from bpy.app.handlers import persistent

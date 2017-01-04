@@ -1,0 +1,25 @@
+#Since no blenderlayer is found in this path, it is searched in the system default paths.
+player: engine/blenderplayer.exe
+blend: ../../template/data/game.blend
+
+#game settings
+volume: 1.0
+
+#video settings
+resolution: 1280 768
+fullscreen: true
+stereomode: nostereo
+anti-aliasing: 0
+
+#game engine options
+debug: false
+fixedtime: false
+nomipmap: false
+show_framerate: false
+show_properties: false
+show_profile: false
+blender_material: false
+ignore_deprecation_warnings: false
+
+#Custom command line
+#exec: ./blenderplayer mygame.blend
