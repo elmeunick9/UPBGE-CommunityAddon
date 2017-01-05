@@ -45,26 +45,7 @@ class MotionBlur(Filter2D):
 		set = (cam.projection_matrix * wtc)
 		cameraMatrix = own['prev']
 		
-	
-		self.x0 = cameraMatrix[0][0]
-		self.x1 = cameraMatrix[0][1]
-		self.x2 = cameraMatrix[0][2]
-		self.x3 = cameraMatrix[0][3]
-		self.x4 = cameraMatrix[1][0]# + F
-		self.x5 = cameraMatrix[1][1]
-		self.x6 = cameraMatrix[1][2]# + S
-		self.x7 = cameraMatrix[1][3]
-		#self.x8 = cameraMatrix[2][0]# + T
-		#self.x9 = cameraMatrix[2][1]
-		#self.x10 = cameraMatrix[2][2]# + L
-		#self.x11 = cameraMatrix[2][3]
-		self.x12 = cameraMatrix[3][0]
-		self.x13 = cameraMatrix[3][1]
-		self.x14 = cameraMatrix[3][2]
-		self.x15 = cameraMatrix[3][3]
-
-		cameraMatrix = set.inverted()
-
-		self.viewProjectionInverse = cameraMatrix
+		self.x = cameraMatrix
+		self.viewProjectionInverse = set.inverted()
 
 		own['prev'] = set

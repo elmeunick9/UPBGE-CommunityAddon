@@ -3,6 +3,9 @@ Change Log
 
 Version 0.2
 -----------------
+ * 170105 - Added MotionBlur 2DFilter, but still needs some improvements.
+ * 170105 - Added Matrix uniforms to the 2DFilter class. Now the only left is integer.
+ * 170105 - Added control.TrackToNearest component and utils.getNearestObject function.
  * 170105 - Fixed bug on core.utils.getLocalDirectory()
  * 170105 - Updated documentation.
  * 170105 - Added Export Game Project operator and functionality + new launcher (Windows Only).

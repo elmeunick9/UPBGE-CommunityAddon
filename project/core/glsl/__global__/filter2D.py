@@ -126,13 +126,12 @@ class Filter2D():
 				if len(t) == 3:
 					if len(t[0]) != 3 or len(t[1]) != 3 or len(t[2]) != 3:
 						raise RuntimeWarning("Uniform mat3 " + name + " malformed")
-					self.shader.setUniformMatrix3(name, list(t))
+					self.shader.setUniformMatrix3(name, t.transposed())
 					
 				elif len(t) == 4:
 					if len(t[0]) != 4 or len(t[1]) != 4 or len(t[2]) != 4 or len(t[3]) != 4:
 						raise RuntimeWarning("Uniform mat4 " + name + " malformed")
-					print(name)
-					self.shader.setUniformMatrix4(name, list(t))
+					self.shader.setUniformMatrix4(name, t.transposed())
 					
 				else: raise RuntimeWarning("Uniform mat3 or mat4 malformed, size " + len(t))
 				

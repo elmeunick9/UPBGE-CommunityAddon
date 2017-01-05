@@ -25,6 +25,7 @@ Math and movement
 -----------------
 .. autofunction:: rand10
 .. autofunction:: randRGB
+.. autofunction:: getNearestObject
 .. autofunction:: getNearestVertexToPoly
 .. autofunction:: getPolyNormal
 .. autofunction:: recalculateNormals

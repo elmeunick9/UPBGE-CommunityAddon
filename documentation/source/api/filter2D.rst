@@ -87,3 +87,5 @@ Trublesome
 The following list contains known features that break on some computers:
 
 * Using implicit conversion of types, like ``float x = 1.0; x /= 2;``. Instead use explicit conversion ``x = x / 2.0``.
+
+If you get an "Invalid uniform value: UniformName." message, most probably it's becouse you have an uniform that are not using in your shader (even if declared).

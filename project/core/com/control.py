@@ -213,13 +213,13 @@ class TrackToNearest(bge.types.KX_PythonComponent):
 	
 	.. attribute:: property
 	
-		Only lock for objects with this property, if empty, look for all object in the scene.
+		Only lock for objects with this property, if empty, look for all objects in the scene.
 		
 	.. attribute:: distance
 		
 		Maxium distance to lock for objects. If 0, no maxium distance.
 	
-	.. attribute:: look
+	.. attribute:: lock
 	
 		Makes the it so that the object only rotates on the Z axis.
 	
