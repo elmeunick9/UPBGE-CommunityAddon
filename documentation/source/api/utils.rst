@@ -16,6 +16,8 @@ Configuration file
 
 Debug
 ---------------------
+You can define constants on your project "script/constant.py" file.
+
 .. autofunction:: debug
 .. autofunction:: verbose
 

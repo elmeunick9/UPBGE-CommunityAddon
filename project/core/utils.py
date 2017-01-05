@@ -78,21 +78,21 @@ def getBlendFilepath():
 		return logic.expandPath("//" + os.path.basename(path))
 		
 
+_local_data_directory = None
 def getLocalDirectory():
-	""" Returns the directory where local data can be stored. By default the same directory than the game. If there is no write acces then a directory inside the user folder. 
-	
-	If a local directory is created it will use the main .blend name for it.
-	"""
-	if module._local_data_directory == None:
-		blendname = os.path.basename(getBlendFilepath())[:-6]
+	""" Returns the directory where local data can be stored. By default the same directory than the game. If there is no write acces then a directory inside the user folder. """
+	global _local_data_directory
+	if _local_data_directory == None:
+		game_name = os.path.normpath(logic.expandPath('//..//'))
+		game_name = game_name[game_name.rfind(os.sep)+len(os.sep):]
 		try:
 			path = logic.expandPath("//../")
 			f = open(path + "config.txt", 'a')
-			module._local_data_directory = path
+			_local_data_directory = path
 		except PermissionError:
 			from sys import platform as _platform
 			if _platform == "linux" or _platform == "linux2" or _platform == "darwin":
-				path = os.getenv("HOME") + "/.local/share/" + blendname + '/'
+				path = os.getenv("HOME") + "/.local/share/" + game_name + '/'
 			elif _platform == "win32" or _platform == "cygwin":
 				import ctypes.wintypes
 				CSIDL_PERSONAL = 5       # My Documents
@@ -102,14 +102,14 @@ def getLocalDirectory():
 				ctypes.windll.shell32.SHGetFolderPathW(None, CSIDL_PERSONAL, None, SHGFP_TYPE_CURRENT, buf)
 				path = buf.value + os.sep + "My Games" + os.sep
 
-			module._local_data_directory = path + blendname + os.sep
+			_local_data_directory = path + game_name + os.sep
 
 		else: f.close()
 
-	if os.path.isdir(module._local_data_directory):
-		return module._local_data_directory
+	if os.path.isdir(_local_data_directory):
+		return _local_data_directory
 	else:
-		path = module._local_data_directory
+		path = _local_data_directory
 		os.makedirs(path)
 		import shutil
 		shutil.copyfile(logic.expandPath("//../config.txt"), path + "config.txt")

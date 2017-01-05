@@ -3,6 +3,7 @@ Change Log
 
 Version 0.2
 -----------------
+ * 170105 - Fixed bug on core.utils.getLocalDirectory()
  * 170105 - Updated documentation.
  * 170105 - Added Export Game Project operator and functionality + new launcher (Windows Only).
  * 170105 - Fixed bug with New Game Project where "data.zip" wasn't being properly packed.

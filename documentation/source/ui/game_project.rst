@@ -13,9 +13,11 @@ This menu will appear once a project is opened. Their functions are as follows:
  * **Explore Project Directory:** Opens a file browser on your project directory. (Actually the ``project/`` folder inside it, which contains must contain the data of your game).
  * **Save Project As:** Copies your project to another folder. If you input a compressed file (``*.zip``, ``*.tar``) it will compress the project and clean it by removing `unwanted files`.
 		
-		`Unwanted Files`: Include ``*.blend1..5``, ``__pycanche__``, ``*.~`` and ``ehthumbs.db``.
+		`Unwanted Files`: Include ``*.blend1..5``, ``__pycache__``, ``*.~`` and ``ehthumbs.db``.
  
- * **Export Game Project:** Opens the a menu to export your game.
+ * **Export Game Project:** Opens a menu to export your game.
+ 
+You should still use the ``Save`` button to save you ``main.blend`` file, or better use the shortcut ``Ctrl+S``.
 
  
 Exporting the game
@@ -62,4 +64,4 @@ The launcher and the addon will automatically add the ``project/core/com`` folde
 To export manually you need to copy a compatible version of UPBGE's BlenderPlayer in your output ``engine/`` folder and create a luncher for it that does the same than this one for your platform.
 
 .. note::
-	If you've cloned this addon, you can create the "CommunityAddon.zip" and the "data.zip" file by executing ``make.py``. The same will be automatically done before when committing, which will also call ``git add -A``. You can disable this behavior on the ``.git/hooks/pre-commit`` file of your repository.
+	If you've cloned this addon, you can create the "CommunityAddon.zip" and the "data.zip" file by executing ``make.py``. The same will be automatically done when committing, which will also call ``git add -A``. You can disable this behavior on the ``.git/hooks/pre-commit`` file of your repository.
