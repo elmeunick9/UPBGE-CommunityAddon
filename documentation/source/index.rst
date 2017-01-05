@@ -7,7 +7,7 @@ The Community Addon for UPBGE can be downloaded or cloned from GitHub `here <htt
 For your convenience we have divided the documentation in two blocks: Blender UI, wich are elements that requiere no coding knowloadge, and Python API, wich is a new API that you can use to further customize behaviour.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :hidden:
 
    ui
