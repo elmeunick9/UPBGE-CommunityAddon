@@ -29,7 +29,7 @@ class ThirdPerson(bge.types.KX_PythonComponent):
 	args = OrderedDict([
 		("Move Speed", 0.1),
 		("Turn Speed", 0.04),
-		("Jump Force", 250),
+		("Jump Force", 120),
 	])
 
 	def start(self, args):
@@ -206,6 +206,45 @@ class Follow(bge.types.KX_PythonComponent):
 	def update(self):
 		from core import utils
 		utils.moveObjectToObject(self.object, self.target, self.speed)
+		
+		
+class TrackToNearest(bge.types.KX_PythonComponent):
+	""" Track to nearest object with a given property
+	
+	.. attribute:: property
+	
+		Only lock for objects with this property, if empty, look for all object in the scene.
+		
+	.. attribute:: distance
+		
+		Maxium distance to lock for objects. If 0, no maxium distance.
+	
+	.. attribute:: look
+	
+		Makes the it so that the object only rotates on the Z axis.
+	
+	"""
+
+	args = OrderedDict([
+		("Property", ""),
+		("Distance", 100),
+		("Lock Z", False)
+	])
+
+	def start(self, args):
+		self.property = args["Property"]
+		self.distance = args["Distance"]
+		self.lock = args["Lock Z"]
+		
+		self.x = None
+		
+	def update(self):
+		from core import utils
+		
+		closest = utils.getNearestObject(self.object, self.property, self.distance)
+		vec = self.object.getVectTo(closest)
+		if self.lock: vec[1][2] = 0
+		self.object.alignAxisToVect(vec[1], 1, 1)
 		
 ################################### HERE BE DRAGONS ##########################################
 camera_zoom = None

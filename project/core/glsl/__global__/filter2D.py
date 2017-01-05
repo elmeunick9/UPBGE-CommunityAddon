@@ -1,5 +1,5 @@
 import inspect, re
-import bgl, bge
+import bgl, bge, mathutils
 
 #######################################
 try:
@@ -109,10 +109,41 @@ class Filter2D():
 			
 	def bindAllUnioforms(self):
 		for uniform in self.uniforms:
-			self.bindUniformf(uniform)
+			try:
+				self.bindUniformf(uniform)
+			except RuntimeWarning: continue
 			
 	def bindUniformf(self, name):
 		t=self.__dict__[name]
-		if type(t) in [list, tuple]: self.shader.setUniformfv(name, list(t))
-		else: self.shader.setUniform1f(name, t)
+		
+		#Check if it's int/float or vecX/matX
+		if type(t) in [list, tuple, mathutils.Matrix, mathutils.Vector]:
+			if len(t) == 0: raise RuntimeWarning("Uniform vec3 or vec4" + name + " malformed, it's empty.")
+			
+			#Check if it's vecX or matX
+			if type(t[0]) in [list, tuple, mathutils.Matrix, mathutils.Vector]:
+			
+				if len(t) == 3:
+					if len(t[0]) != 3 or len(t[1]) != 3 or len(t[2]) != 3:
+						raise RuntimeWarning("Uniform mat3 " + name + " malformed")
+					self.shader.setUniformMatrix3(name, list(t))
+					
+				elif len(t) == 4:
+					if len(t[0]) != 4 or len(t[1]) != 4 or len(t[2]) != 4 or len(t[3]) != 4:
+						raise RuntimeWarning("Uniform mat4 " + name + " malformed")
+					print(name)
+					self.shader.setUniformMatrix4(name, list(t))
+					
+				else: raise RuntimeWarning("Uniform mat3 or mat4 malformed, size " + len(t))
+				
+			#It's a VecX
+			else:
+				self.shader.setUniformfv(name, list(t))
+				
+		#It's an int/float
+		else:
+			try:
+				self.shader.setUniform1f(name, t) #TODO: Ints
+			except TypeError:
+				print("TypeError on uniform", name, "of type", type(t))
 		

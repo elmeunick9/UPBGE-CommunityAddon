@@ -167,6 +167,33 @@ def getNearestVertexToPoly(object, poly, point):
 			f = v
 
 	return f
+	
+def getNearestObject(obj, property="", max_distance=0):
+	""" Returns the closest object to 'obj'. If there isn't any, returns itself.
+	
+	:param obj: The base object
+	:type poly: |KX_GameObject|
+	:param property: If any, will filter only objects with this property. If it's a Bool must be checked as True
+	:type property: string
+	:param max_distance: Filter objects within this distance. If 0, do not filter distance.
+	:type property: float
+	"""
+
+	if property == "":	obj_list = [x for x in obj.scene.objects if x != obj and obj.getDistanceTo(x) <= max_distance] 
+	else: 				obj_list = [x for x in obj.scene.objects if x.get(property, False) != False and x != obj and obj.getDistanceTo(x) <= max_distance]
+	
+	if len(obj_list) == 0: return obj
+	
+	closest  = obj_list[0]
+	distance = obj.getDistanceTo(closest)
+
+	for object in obj_list[1:]:
+		new_distance = obj.getDistanceTo(object)
+		if new_distance < distance:
+			closest = object
+			distance = new_distance
+			
+	return(closest)
 
 def getPolyNormal(poly):
 	""" Returns the normal of poligon based on the position of their vertex. It calculates the normal, it doesn't return manually modified normals.
