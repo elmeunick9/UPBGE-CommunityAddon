@@ -7,6 +7,7 @@ Blender UI
   :maxdepth: 2
   :hidden:
 
+  ui/game_project
   ui/components
 
 Tutorial: First Steps
