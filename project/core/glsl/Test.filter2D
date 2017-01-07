@@ -1,0 +1,11 @@
+uniform sampler2D bgl_RenderedTexture;
+
+uniform sampler2D iChannel0;
+
+void main()
+{
+	vec2 xy = gl_TexCoord[0].st;//Condensing this into one line
+	//xy.y = 1.0 - xy.y;
+	vec4 texColor = texture2D(iChannel0, xy);//Get the pixel at xy from iChannel0
+	gl_FragColor = mix(texColor, texture2D(bgl_RenderedTexture, xy), 0.5); //Set the screen pixel to that color
+}

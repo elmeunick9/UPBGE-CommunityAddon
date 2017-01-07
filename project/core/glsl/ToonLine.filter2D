@@ -12,8 +12,8 @@ uniform sampler2D bgl_RenderedTexture;
 uniform vec2 bgl_TextureCoordinateOffset[9];
 
 uniform float brightness; // = 1.0;
-uniform float mode; // = 1;
 uniform float threshold; // = 0.2;
+uniform int mode; // = 1;
 uniform vec4  border_color; // = Vec4(0.0);
 
 void main(void)

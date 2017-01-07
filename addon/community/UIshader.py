@@ -160,7 +160,9 @@ class PT_FiltersList(bpy.types.Panel):
 					if key+'0' in ListItem.__dict__: functx = functx[:-2] + ")"
 							
 				else:
-					if not key in ListItem.__dict__: setattr(ListItem, key, bpy.props.FloatProperty(name=key, default=values))
+					if not key in ListItem.__dict__:
+						if type(values) == int: setattr(ListItem, key, bpy.props.IntProperty(name=key, default=values))
+						else: setattr(ListItem, key, bpy.props.FloatProperty(name=key, default=values))
 					else:
 						functx += key + "=" + getListVal(key)
 					row = layout.row()

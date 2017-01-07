@@ -15,6 +15,24 @@ def debug(text):
 def verbose(text):
 	if constant.CORE_DEBUG_VERBOSE == True: print(text)
 	
+def newTextureFromFile(path):
+	""" Input a filepath of an image, create the texture with BGL and return its bindID """
+	imagePath = bge.logic.expandPath('//' + path)
+	image = bge.texture.ImageFFmpeg(imagePath)
+	
+	image_buffer_1 = image.image
+
+	#Generate new texture
+	id_buf = bgl.Buffer(bgl.GL_INT, 1)
+	bgl.glGenTextures(1, id_buf)
+
+	#Steup and bind texture
+	bgl.glBindTexture(bgl.GL_TEXTURE_2D, id_buf[0])
+	bgl.glTexImage2D(bgl.GL_TEXTURE_2D, 0, bgl.GL_RGBA, image.size[0], image.size[1], 0, bgl.GL_RGBA, bgl.GL_UNSIGNED_BYTE, image_buffer_1)
+	bgl.glTexParameteri(bgl.GL_TEXTURE_2D, bgl.GL_TEXTURE_MIN_FILTER, bgl.GL_LINEAR);
+	bgl.glTexParameteri(bgl.GL_TEXTURE_2D, bgl.GL_TEXTURE_MAG_FILTER, bgl.GL_LINEAR);
+
+	return id_buf[0] #bindID // bindCode
 	
 class Filter2D():
 
@@ -30,6 +48,11 @@ class Filter2D():
 	
 		self.uniforms = []
 		self.shadow = None
+		
+		if not self.owner:
+			from bge import logic
+			self.owner = logic.getCurrentController().owner
+			self.scene = self.owner.scene
 		
 		self.__define__() #For child
 	
@@ -50,11 +73,8 @@ class Filter2D():
 	def __define__(self): pass
 			
 	def load(self):
-		if not self.owner:
-			from bge import logic
-			self.owner = logic.getCurrentController().owner
-			self.scene = self.owner.scene
-			
+		from bge import logic
+		
 		if self.slot == None:
 			try: self.slot = max(Filter2D.uslot)+1
 			except ValueError: self.slot = 0
@@ -111,11 +131,25 @@ class Filter2D():
 	def bindAllUnioforms(self):
 		for uniform in self.uniforms:
 			try:
-				self.bindUniformf(uniform)
+				value=self.__dict__[uniform]
+				self.bindUniformf(uniform, value)
 			except RuntimeWarning: continue
 			
-	def bindUniformf(self, name):
-		t=self.__dict__[name]
+	def bindSampler2D(self, name, bindID):
+		bgl.glActiveTexture(bgl.GL_TEXTURE0 + bindID)
+		bgl.glBindTexture(bgl.GL_TEXTURE_2D, bindID)
+		self.shader.setSampler(name, bindID)
+			
+	def bindUniformf(self, name, t):
+			
+		#Check if it's texture
+		if type(t) == str:
+			self.bindSampler2D(name, newTextureFromFile(t))
+			return
+			
+		if str(type(t)) == "<class 'BL_Texture'>":
+			self.bindSampler2D(name, t.bindCode)
+			return
 		
 		#Check if it's int/float or vecX/matX
 		if type(t) in [list, tuple, mathutils.Matrix, mathutils.Vector]:
@@ -143,7 +177,8 @@ class Filter2D():
 		#It's an int/float
 		else:
 			try:
-				self.shader.setUniform1f(name, t) #TODO: Ints
+				if type(t) == int: self.shader.setUniform1i(name, t)
+				else: self.shader.setUniform1f(name, t)
 			except TypeError:
 				print("TypeError on uniform", name, "of type", type(t))
 		

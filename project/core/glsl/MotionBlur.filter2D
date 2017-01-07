@@ -16,7 +16,7 @@ uniform sampler2D bgl_DepthTexture;
 uniform sampler2D bgl_RenderedTexture;
 
 uniform mat4 viewProjectionInverse;
-uniform mat4 x; 
+uniform mat4 x;
 
 mat4 y = inverse(viewProjectionInverse);
 mat4 previousViewProjection1 = mat4(x[0][0],x[0][1],x[0][2], x[0][3],
