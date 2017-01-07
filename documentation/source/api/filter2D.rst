@@ -10,6 +10,8 @@ Standard Shaders
 -----------------------------------
 Standard shaders can be used directly creatig an instance of a 2DFilter subclass. A shortcut to use them is the namescpace ``core.utils.filter2d``. Example:
 
+
+
 .. code-block:: python
 
 	from core import behavior, utils
@@ -22,10 +24,14 @@ Standard shaders can be used directly creatig an instance of a 2DFilter subclass
 		def onKeyRelease(self, keys):
 			if key.E in keys: self.vignetting.colorR = 0
 
+Shaders initialized from the UI can be accesed in python with the following path: ``bge.logic.globalDict["__reserved__"]["filter2D"][SceneName][Index]``.
+
 .. automodule:: core.glsl
 	:members:
 	
 .. .. Debug
+
+
 
 Installing or creating custom shaders
 -----------------------------------------------
@@ -45,13 +51,20 @@ The following template can be used (FilterName.filter2D):
 .. code-block:: c
 
 	uniform sampler2D bgl_RenderedTexture;
-
-	uniform variableName;
-	uniform variableNameTwo;
-	//More...
 	
+	unifrom sampler2D myTexture;
+	uniform int myInteger;
+	uniform float myFloat;
+	uniform vec3 myVector;
+	uniform mat4 myMatrix;
+
+	//Commonly used
+	uniform float iTime;
+	uniform vec2 iResolution;
+	
+	//Constants
 	const float tolerance = 0.6;
-	//More...
+	//...
 	
 	void main(void)
 	{
@@ -59,27 +72,58 @@ The following template can be used (FilterName.filter2D):
 		gl_FragColor = vec4(1.0); //Or any other vec4 structure.
 	}
 	
-Once you have the shader done, you must create the documentation and specify the initialization values. The documentation is writted for ReST for Sphinx. The name of the class must be the filename of the shader. The class attributes will define the uniforms. Attributes defined in ``__init__`` won't be taken as uniforms. You can create new methods to use with complex shaders. Example:
+Once you have the shader done, you must create the documentation and specify the initialization values. The documentation is writted for ReST for Sphinx. The name of the class must be the filename of the shader. The class attributes will define the uniforms. You can create new methods to use with complex shaders. Example:
 
 .. code-block:: python
 
 	from filter2D import Filter2D
+	import time
 
 	class FilterName(Filter2D):
 		"""
 		A filter2D subclass.
 		
-		.. attribute:: variableName
+		.. attribute:: myInteger
 			
 			This does something.
 			
 		[...]
 		"""
 		
-		variableName = 0.0
-		variableNameTwo = 6.182
+		def __define__(self):
+			from bge import render
+			FilterName.iResolution = [render.getWindowWidth(), render.getWindowHeight()]
+			FilterName.iTime = time.time()
+			
+		def load(self):
+			super().load()
+			self.scene.pre_draw.append(self.update)
 		
-Additionally you can override the ``__define__`` method in order to use bge on the shader wrapper. Do not import the bge API outside this method, or else the UI Panel for custom shaders won't work properly. Uniforms defined inside this method won't appear in the UI Panel.
+		def unload(self):
+			self.scene.pre_draw.remove(self.update)
+			super.unload()
+			
+		def update():
+			self.iTime = time.time()
+		
+		#You can also use textures stored in a material, but use the __define__ method.
+		myTexture = "cool_cat.jpg" 
+		
+		myInteger = 8
+		myFloat = 6.182
+		myVector = [10.8, 2.0, 89]
+		myMatrix = [[ 0, 1, 2, 3],
+			    [ 4, 5, 6, 7],
+			    [ 8, 9,10,11],
+			    [12,13,14,15]]
+		[...]
+		
+Additionally you can override the ``__define__`` method in order to use BGE on the shader wrapper. Do not import the BGE API at the module level, or else the UI Panel for custom shaders won't work properly. Uniforms defined inside this method won't appear in the UI Panel.
+
+Once an uniform is defined as a class method, in order to be modified on real-time it has to be accesed as an object attribute.
+
+
+
 
 
 Trublesome
