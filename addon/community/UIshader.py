@@ -2,6 +2,7 @@ from .macro import *
 from . import utils
 import bpy
 import bpy.props as prop
+import os
 
 class ListItem(bpy.types.PropertyGroup):
 	""" Group of properties representing an item in the list """
@@ -144,7 +145,10 @@ class PT_FiltersList(bpy.types.Panel):
 			path = os.path.dirname(bpy.data.filepath) + os.sep + "core" + os.sep + "glsl" + os.sep + name + ".py"
 			uniforms = getAttrFromPython(path, name)
 			
-			def getListVal(key): return str(getattr(bpy.context.scene.my_list[scene.list_index], key))
+			def getListVal(key):
+				val = getattr(bpy.context.scene.my_list[scene.list_index], key)
+				if type(val) != str: return str(val)
+				else: return "'" + os.path.normpath(val.replace("//", "")).replace("\\", "/") + "'"
 			
 			functx = "glsl." + name + "("
 			for key, values in uniforms.items():
@@ -161,7 +165,8 @@ class PT_FiltersList(bpy.types.Panel):
 							
 				else:
 					if not key in ListItem.__dict__:
-						if type(values) == int: setattr(ListItem, key, bpy.props.IntProperty(name=key, default=values))
+						if type(values) == str: setattr(ListItem, key, bpy.props.StringProperty(name=key, default=values, subtype='FILE_PATH'))
+						elif type(values) == int: setattr(ListItem, key, bpy.props.IntProperty(name=key, default=values))
 						else: setattr(ListItem, key, bpy.props.FloatProperty(name=key, default=values))
 					else:
 						functx += key + "=" + getListVal(key)

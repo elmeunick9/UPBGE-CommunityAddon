@@ -1,4 +1,4 @@
-import inspect, re
+import inspect, re, os
 import bgl, bge, mathutils
 
 #######################################
@@ -17,7 +17,7 @@ def verbose(text):
 	
 def newTextureFromFile(path):
 	""" Input a filepath of an image, create the texture with BGL and return its bindID """
-	imagePath = bge.logic.expandPath('//' + path)
+	imagePath = path
 	image = bge.texture.ImageFFmpeg(imagePath)
 	
 	image_buffer_1 = image.image
@@ -127,12 +127,10 @@ class Filter2D():
 		if name in self.uniforms:
 			self.bindUniformf(name)
 		
-			
 	def bindAllUnioforms(self):
 		for uniform in self.uniforms:
 			try:
-				value=self.__dict__[uniform]
-				self.bindUniformf(uniform, value)
+				self.bindUniformf(uniform)
 			except RuntimeWarning: continue
 			
 	def bindSampler2D(self, name, bindID):
@@ -140,10 +138,13 @@ class Filter2D():
 		bgl.glBindTexture(bgl.GL_TEXTURE_2D, bindID)
 		self.shader.setSampler(name, bindID)
 			
-	def bindUniformf(self, name, t):
+	def bindUniformf(self, name):
+	
+		t=self.__dict__[name]
 			
 		#Check if it's texture
 		if type(t) == str:
+			if not os.path.isabs(t): t = bge.logic.expandPath('//' + t)
 			self.bindSampler2D(name, newTextureFromFile(t))
 			return
 			

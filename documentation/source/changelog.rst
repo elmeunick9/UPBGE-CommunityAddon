@@ -3,6 +3,7 @@ Change Log
 
 Version 0.2
 -----------------
+ * 170107 - Added UI for selecting texture filepath for 2DFilters
  * 170107 - Added textures (internal and external) easy binding for 2DFilters.
  * 170107 - Added int as a valid type of uniform for automatic binding.
  * 170107 - Added events: "on_scene_added", "on_scene_removed" and "on_next_frame"
