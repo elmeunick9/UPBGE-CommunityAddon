@@ -3,6 +3,8 @@ Change Log
 
 Version 0.2
 -----------------
+ * 170107 - Added events: "on_scene_added", "on_scene_removed" and "on_next_frame"
+ * 170107 - Fixed bug with 2DFilters instanced from UI didn't load on overlay scenes.
  * 170105 - Added MotionBlur 2DFilter, but still needs some improvements.
  * 170105 - Added Matrix uniforms to the 2DFilter class. Now the only left is integer.
  * 170105 - Added control.TrackToNearest component and utils.getNearestObject function.

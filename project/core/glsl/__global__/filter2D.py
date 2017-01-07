@@ -15,6 +15,7 @@ def debug(text):
 def verbose(text):
 	if constant.CORE_DEBUG_VERBOSE == True: print(text)
 	
+	
 class Filter2D():
 
 	scene = None

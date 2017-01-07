@@ -1,8 +1,10 @@
-from . import glsl, module, utils, sequencer
+from . import glsl, module, utils, sequencer, events
 import bge
 
 import sys
 sys.path.append(bge.logic.expandPath('//core/com'))
+
+if str(type(bge)) == "<class 'sphinx.ext.autodoc._MockModule'>": from . import com
 
 def execute_stored_scripts():
 	scnn = bge.logic.getCurrentScene().name
@@ -17,21 +19,44 @@ def execute_stored_scripts():
 			code = compile(script, '<string>', 'exec')
 			exec(code)
 			
-	except KeyError: pass 
-
-#To avoid documentation (Sphinx) errors, we don't initialize anything.
-if str(type(bge)) != "<class 'sphinx.ext.autodoc._MockModule'>":
-	execute_stored_scripts()
-else:
-	from . import com
+	except KeyError: pass
 	
-
-
-import time
-
+def clean_stored_scripts():
+	scnn = bge.logic.getCurrentScene().name
+	fd = bge.logic.globalDict["__reserved__"]["filter2D"]
+	del fd[scnn]
+	
+import time, collections
 last_time = [time.time(), time.time()]
-def loop():
 
+scene_owners = collections.OrderedDict()
+scene_onames = {}
+count = 0
+def loop(cont):
+	global scene_owners, scene_onames, count
+
+	#Poll scene status
+	coname = cont.owner.name
+	if not coname in scene_owners:						#Scene loaded
+		scene_owners[coname] = count
+		scene_onames[coname] = cont.owner.scene.name
+		execute_stored_scripts()
+		for x in events.on_scene_added: x(cont.owner.scene.name)
+	else:
+		if list(scene_owners.items())[0][0] == coname:
+			count += 1 #Will never overflow on Python3
+			for own in scene_owners:
+				if scene_owners[own] != count - 1:		#Scene deleted last frame
+					clean_stored_scripts()
+					del scene_owners[coname]
+					for x in events.on_scene_removed: x(scene_onames[coname])
+			
+		scene_owners[coname] = count		
+
+	next_frame_callbacks = events.on_next_frame[:]
+	del events.on_next_frame[:]
+	for x in next_frame_callbacks: x()
+	
 	#Fequency Callbacks
 	global last_time
 

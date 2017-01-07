@@ -19,6 +19,8 @@ This menu will appear once a project is opened. Their functions are as follows:
  
 You should still use the ``Save`` button to save you ``main.blend`` file, or better use the shortcut ``Ctrl+S``.
 
+Since each project is independent of each other (has it's own copy of the Core API), updating the addon won't update the Core API or components of the project. To do so, copy the ``core`` folder of a newly created project on the old one.
+
  
 Exporting the game
 -----------------------------

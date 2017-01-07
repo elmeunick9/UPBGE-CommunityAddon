@@ -1,2 +1,2 @@
 LIBNAME = "community"
-VERSION = 170105
+VERSION = 170107

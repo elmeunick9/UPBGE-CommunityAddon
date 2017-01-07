@@ -4,7 +4,9 @@ class MotionBlur(Filter2D):
 	"""
 	Blur when in motion...
 	
-	.. image:: ../Filter2DImages/GameBoyColor.jpg
+		.. attribute:: distance
+		
+		:type: float
 	
 	\\
 	
