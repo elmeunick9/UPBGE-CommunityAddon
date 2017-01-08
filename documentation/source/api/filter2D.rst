@@ -37,14 +37,14 @@ Installing or creating custom shaders
 -----------------------------------------------
 The `core` API uses the directory ``data/core/glsl`` for GLSL shaders. Such shaders must use the extension **.filter2D** when designed to be used as filters. If you have the source code of a shader, moving it there and creating a 2DFilter subclass should be enough to make it work, however shaders must be BGE complaint so you may need a little understanding of GLSL before you can use third party shaders not designed specifically for Blender.
 
-The shaders are coded in GLSL, a language very similar to C that is compiled by BGE at runtime (when loading the shader). Depending on the version of Blender you're using you must guarantee that your shader can work with a min version of OpenGL.
+You can find a good first steps tutorial to GLSL here: `<https://gamedevelopment.tutsplus.com/tutorials/a-beginners-guide-to-coding-graphics-shaders--cms-23313>`_
 
-When porting a third party shader it's important to look at the following things:
+To port shaders from ShaderToy replace the following:
+ 
+ - mainImage(`[...]`) **->** main()
+ - fragColor **->** gl_FragColor
+ - fragCoord **->** gl_TexCoord[0].st * iResolution
 
-* It must be a fragment shader, meaning that in the shader at some point the variable **gl_FragColor** is used.
-* It should have a **sampler2D uniform**, you need to rename it to *bgl_RenderedTexture* to make it work in BGE.
-* It must have a **main** method.
-* Build-in types that are predefined macros or constants can be converted to uniforms if you want to modify them in realtime.
 
 The following template can be used (FilterName.filter2D):
 
@@ -122,8 +122,7 @@ Additionally you can override the ``__define__`` method in order to use BGE on t
 
 Once an uniform is defined as a class method, in order to be modified on real-time it has to be accesed as an object attribute.
 
-
-
+Notice that sampler2D uniforms can be binded using any of the following types: string (relative or absolute path), BL_Texture, VideoTexture.Texture, (bgl.Buffer, sizex, sizey) or ("bindId", bindId)
 
 
 Trublesome

@@ -3,6 +3,8 @@ Change Log
 
 Version 0.2
 -----------------
+ * 170108 - Removed old fix on media.Screen about audio sync that wasn't working propery since it's now already fixed in the GE source. 
+ * 170108 - Added "VideoTexture.Texture", "("bindCode", bindId)", and "(bgl.Buffer, sizex, sizey)" as possible new sampler2D uniforms.
  * 170107 - Added UI for selecting texture filepath for 2DFilters
  * 170107 - Added textures (internal and external) easy binding for 2DFilters.
  * 170107 - Added int as a valid type of uniform for automatic binding.

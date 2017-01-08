@@ -19,20 +19,23 @@ def newTextureFromFile(path):
 	""" Input a filepath of an image, create the texture with BGL and return its bindID """
 	imagePath = path
 	image = bge.texture.ImageFFmpeg(imagePath)
+	return [image, newTextureFromBuffer(image.image, image.size[0], image.size[1])]
 	
-	image_buffer_1 = image.image
-
+def newTextureFromBuffer(buffer, sizex, sizey, id_buf=None):
+	""" Returns a bgl.Buffer of one element containing the bindID """
+	
 	#Generate new texture
-	id_buf = bgl.Buffer(bgl.GL_INT, 1)
-	bgl.glGenTextures(1, id_buf)
-
+	if id_buf == None:
+		id_buf = bgl.Buffer(bgl.GL_INT, 1)
+		bgl.glGenTextures(1, id_buf)
+	
 	#Steup and bind texture
 	bgl.glBindTexture(bgl.GL_TEXTURE_2D, id_buf[0])
-	bgl.glTexImage2D(bgl.GL_TEXTURE_2D, 0, bgl.GL_RGBA, image.size[0], image.size[1], 0, bgl.GL_RGBA, bgl.GL_UNSIGNED_BYTE, image_buffer_1)
+	bgl.glTexImage2D(bgl.GL_TEXTURE_2D, 0, bgl.GL_RGBA, sizex, sizey, 0, bgl.GL_RGBA, bgl.GL_UNSIGNED_BYTE, buffer)
 	bgl.glTexParameteri(bgl.GL_TEXTURE_2D, bgl.GL_TEXTURE_MIN_FILTER, bgl.GL_LINEAR);
 	bgl.glTexParameteri(bgl.GL_TEXTURE_2D, bgl.GL_TEXTURE_MAG_FILTER, bgl.GL_LINEAR);
 
-	return id_buf[0] #bindID // bindCode
+	return id_buf #bindID // bindCode
 	
 class Filter2D():
 
@@ -47,7 +50,7 @@ class Filter2D():
 		#the uniform will be updated when an instance attribute that is also uniform is.
 	
 		self.uniforms = []
-		self.shadow = None
+		self.textures = []
 		
 		if not self.owner:
 			from bge import logic
@@ -110,17 +113,18 @@ class Filter2D():
 			traceback.print_exc()
 
 	def unload(self):
-		if self.scene == None: return
-		self.scene.filterManager.removeFilter(self.slot)
-		Filter2D.uslot.remove(self.slot)
+		if self.scene != None:
+			try: self.scene.filterManager.removeFilter(self.slot)
+			except SystemError: pass
+			Filter2D.uslot.remove(self.slot)
+		for x in self.textures:
+			if str(type(x)) == "<class 'bgl.Buffer'>": bgl.glDeleteTextures(1,  x)
 		
 	def __del__(self):
-		try:
-			name = self.__class__.__name__
-			slot = self.slot
-			self.unload()
-			verbose("Removed 2D Filter " + name + " at slot " + str(slot))
-		except SystemError: pass	
+		name = self.__class__.__name__
+		slot = self.slot
+		self.unload()
+		verbose("Removed 2D Filter " + name + " at slot " + str(slot))
 			
 	def __setattr__(self, name, value):
 		super().__setattr__(name, value)
@@ -133,11 +137,12 @@ class Filter2D():
 				self.bindUniformf(uniform)
 			except RuntimeWarning: continue
 			
-	def bindSampler2D(self, name, bindID):
+	def bindSampler2D(self, name, bindID, slot=0):
 		bgl.glActiveTexture(bgl.GL_TEXTURE0 + bindID)
 		bgl.glBindTexture(bgl.GL_TEXTURE_2D, bindID)
-		self.shader.setSampler(name, bindID)
-			
+		self.shader.setTexture(slot, bindID, name)
+		self.shader.setSampler(name, slot)
+		
 	def bindUniformf(self, name):
 	
 		t=self.__dict__[name]
@@ -145,12 +150,36 @@ class Filter2D():
 		#Check if it's texture
 		if type(t) == str:
 			if not os.path.isabs(t): t = bge.logic.expandPath('//' + t)
-			self.bindSampler2D(name, newTextureFromFile(t))
+			image, buf_id = newTextureFromFile(t)
+			if not buf_id in self.textures: self.textures.append(buf_id)
+			self.bindSampler2D(name, buf_id[0], self.textures.index(buf_id))
 			return
 			
 		if str(type(t)) == "<class 'BL_Texture'>":
-			self.bindSampler2D(name, t.bindCode)
+			if not t.bindCode in self.textures: self.textures.append(t.bindCode)
+			self.bindSampler2D(name, t.bindCode, self.textures.index(t.bindCode))
 			return
+			
+		if str(type(t)) == "<class 'VideoTexture.Texture'>":
+			if not t.bindId in self.textures: self.textures.append(t.bindId)
+			self.bindSampler2D(name, t.bindId, self.textures.index(t.bindId))
+			return
+		
+		if type(t) == tuple and len(t) == 3:
+			buff, sx, sy = t 
+			if str(type(buff)) == "<class 'bgl.Buffer'>":
+				buf_id = newTextureFromBuffer(buff, sx, sy)
+				if not buf_id in self.textures: self.textures.append(buf_id)
+				self.bindSampler2D(name, buf_id[0], self.textures.index(buf_id))
+				return
+				
+		if type(t) == tuple and len(t) == 2:
+			code, bindId = t 
+			if code == "bindCode" or code == "bindId" or code == "bindID":
+				if not bindId in self.textures: self.textures.append(bindId)
+				self.bindSampler2D(name, bindId, self.textures.index(bindId))
+				return
+			
 		
 		#Check if it's int/float or vecX/matX
 		if type(t) in [list, tuple, mathutils.Matrix, mathutils.Vector]:

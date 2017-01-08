@@ -36,6 +36,7 @@ class Screen():
 		self.frame = 0
 		self.speaker = None
 		
+		
 		try:
 			t = obj.meshes[0].materials[0].textures[0]
 			if t == None: raise Exception
@@ -89,12 +90,14 @@ class Screen():
 		
 		#Audio
 		try:
-			self.true_start_file = video
 			self.speaker = AudioFile()
+			self.speaker = self.speaker.play(video)
 		except RuntimeError: pass
 			
 		#Callback
 		self.callback = callback
+		
+		return self
 		
 	def fadeIn(self, time):
 		"""Starts to make fadein now. It actuates over the alpha chanel of the |KX_GameObject| representing this screen. In order to work it needs *object color* enabled on the material.
@@ -117,10 +120,6 @@ class Screen():
 		self.video.refresh(True)
 		if self.video.source.status == 2:
 			self.frame += 1
-			if self.true_start_file and self.frame >= self.video.source.preseek:
-				try: self.speaker = self.speaker.play(self.true_start_file)
-				except: pass
-				self.true_start_file = None
 			
 		if self.video.source.status == 3:
 			self.frame = 0

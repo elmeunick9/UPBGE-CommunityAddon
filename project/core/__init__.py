@@ -51,7 +51,12 @@ def loop(cont):
 					del scene_owners[coname]
 					for x in events.on_scene_removed: x(scene_onames[coname])
 			
-		scene_owners[coname] = count		
+		scene_owners[coname] = count
+		
+	#Special case to cleanly remove 2DFilters when exiting the game form the Viewport, if exit in another way the won't be cleanly removed.
+	
+		
+
 
 	next_frame_callbacks = events.on_next_frame[:]
 	del events.on_next_frame[:]

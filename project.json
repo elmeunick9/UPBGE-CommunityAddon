@@ -1,1 +1,1 @@
-{"bge-project": {"settings": {"filter2D": {"Scene": {"0": "bge.logic.globalDict['__reserved__']['filter2D']['Scene'][0]=glsl.Drugged(contrast=1.7999999523162842, brightness=0.800000011920929, amplitude=0.07999999821186066, turbulence=20.0)"}}}}}
+{"bge-project": {"settings": {"filter2D": {"Scene": {}, "Scene.001": {"0": "bge.logic.globalDict['__reserved__']['filter2D']['Scene.001'][0]=glsl.Texture(opacity=0.20000000298023224, texture='media/cool_mage.jpg')"}}}}}

@@ -1,0 +1,9 @@
+uniform sampler2D bgl_RenderedTexture;
+uniform sampler2D texture;
+uniform float opacity;
+
+void main()
+{
+	gl_FragColor.rgb = mix(texture2D(texture, gl_TexCoord[0].st), texture2D(bgl_RenderedTexture, gl_TexCoord[0].st), 1.0-opacity).rgb;
+	//gl_FragColor.a = 1.0-opacity;
+}
