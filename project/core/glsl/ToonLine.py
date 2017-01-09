@@ -30,7 +30,7 @@ class  ToonLine(Filter2D):
 		:type: float
 		
 	"""
-	
+
 	brightness = 1.0
 	border_color = [0.0, 0.0, 0.0, 0.0]
 	mode = 1

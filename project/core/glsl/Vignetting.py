@@ -54,6 +54,6 @@ class Vignetting(Filter2D):
 	
 	u_inner_color=(1,1,1,0)
 	u_outer_color=(0,0,0)
-	u_scale = 1
+	u_scale = 1.0
 	u_intensity = 0.8
 	u_radius = 1.1

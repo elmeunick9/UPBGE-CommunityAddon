@@ -2,13 +2,14 @@ from filter2D import Filter2D
 
 class MotionBlur(Filter2D):
 	"""
-	Blur when in motion...
+	.. image:: ../Filter2DImages/NoPreview.jpg
+	
+	\\
 	
 		.. attribute:: distance
 		
 		:type: float
 	
-	\\
 	
 	"""
 	

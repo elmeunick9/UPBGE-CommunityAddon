@@ -1,0 +1,27 @@
+uniform sampler2D bgl_RenderedTexture;
+void main()
+{
+ vec4 sum = vec4(0);
+ vec2 texcoord = vec2(gl_TexCoord[0]).st;
+ int j;
+ int i;
+ 
+ //int samples=2;
+ //float alpha= 0.40; 
+ 
+ int samples=8;
+ float alpha=0.4;
+ 
+ float range=0.008;
+ 
+ for( i= -samples ;i < samples; i++)
+ {
+  for (j = -samples; j < samples; j++)
+  {
+   sum += texture2D(bgl_RenderedTexture, texcoord + vec2(j, i)*range) * alpha/samples;
+  }
+ }
+ 
+ gl_FragColor = sum*sum*0.005+(texture2D(bgl_RenderedTexture, texcoord)/1.2);
+ gl_FragColor.a = 1.0;
+}

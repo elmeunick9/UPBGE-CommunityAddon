@@ -29,13 +29,17 @@ class Screen():
 		A function to call once the reproduction ends. Will be overwrited with the paramater specified on the ``play`` method, even if it's ``None``.
 	"""
 	
-	def __init__(self, obj):
+	def __init__(self, obj=None):
 		self.obj = obj
 		self.callback = None
 		self.true_start_file = None
 		self.frame = 0
 		self.speaker = None
 		
+		if obj == None:
+			logic.LibLoad(logic.expandPath("//core/misc/screen.blend"), 'Scene')
+			obj = self.obj = logic.getCurrentScene().objects["__CORE__Screen"]
+			obj.visible = False
 		
 		try:
 			t = obj.meshes[0].materials[0].textures[0]
