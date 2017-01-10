@@ -1,4 +1,4 @@
-from . import glsl, module, utils, sequencer, events
+from . import glsl, module, utils, sequencer, event
 import bge
 
 import sys
@@ -41,7 +41,7 @@ def loop(cont):
 		scene_owners[coname] = count
 		scene_onames[coname] = cont.owner.scene.name
 		execute_stored_scripts()
-		for x in events.on_scene_added: x(cont.owner.scene.name)
+		for x in event.on_scene_added: x(cont.owner.scene.name)
 	else:
 		if list(scene_owners.items())[0][0] == coname:
 			count += 1 #Will never overflow on Python3
@@ -49,17 +49,12 @@ def loop(cont):
 				if scene_owners[own] != count - 1:		#Scene deleted last frame
 					clean_stored_scripts()
 					del scene_owners[coname]
-					for x in events.on_scene_removed: x(scene_onames[coname])
+					for x in event.on_scene_removed: x(scene_onames[coname])
 			
-		scene_owners[coname] = count
-		
-	#Special case to cleanly remove 2DFilters when exiting the game form the Viewport, if exit in another way the won't be cleanly removed.
-	
-		
+		scene_owners[coname] = count	
 
-
-	next_frame_callbacks = events.on_next_frame[:]
-	del events.on_next_frame[:]
+	next_frame_callbacks = event.on_next_frame[:]
+	del event.on_next_frame[:]
 	for x in next_frame_callbacks: x()
 	
 	#Fequency Callbacks

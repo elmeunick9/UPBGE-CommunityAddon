@@ -8,6 +8,7 @@ The new Python API, `core`, provides extra functionality to the BGE API.
   :maxdepth: 2
   :hidden:
 
+  api/event
   api/media
   api/utils
   api/sequencer

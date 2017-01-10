@@ -130,5 +130,6 @@ Trublesome
 The following list contains known features that break on some computers:
 
 * Using implicit conversion of types, like ``float x = 1.0; x /= 2;``. Instead use explicit conversion ``x = x / 2.0``.
+* Initializing uniforms like ``uniform float x = 1.0;`` may cause errors on some GPU drivers, instead use the Python Wrapper to initializate all uniforms.
 
 If you get an "Invalid uniform value: UniformName." message, most probably it's becouse you have an uniform that are not using in your shader (even if declared).

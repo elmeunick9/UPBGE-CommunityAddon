@@ -22,43 +22,56 @@ class ThirdPerson(bge.types.KX_PythonComponent):
 	
 	.. attribute:: jump_force
 	
-		The movement on the SPACE
+		The movement on the SPACE, more ticks will take more to jump.
+		
+	.. attribute:: jump_ticks
+	
+		Logic thicks that takes to a full impulse to be applied. Gives the illusion that pressing a key harder you can jump heighter. 
 	
 	"""
 
 	args = OrderedDict([
 		("Move Speed", 0.1),
 		("Turn Speed", 0.04),
+		("Invert On Backwards", False),
 		("Jump Force", 120),
+		("Jump Ticks", 5)
 	])
 
 	def start(self, args):
+		from core import event
+		self.forward = event.keyBind(bge.events.WKEY)
+		self.backward = event.keyBind(bge.events.SKEY)
+		self.right = event.keyBind(bge.events.DKEY)
+		self.left = event.keyBind(bge.events.AKEY)
+		self.jump = event.keyBind(bge.events.SPACEKEY)
+		
 		self.move_speed = args['Move Speed']
 		self.turn_speed = args['Turn Speed']
+		self.invert_back = args["Invert On Backwards"]
 		
 		self.object.collisionCallbacks.append(self.collide)
 		self.collision_time = 0
 		self.jump_force = args["Jump Force"]
+		self.jump_ticks = args["Jump Ticks"]
 		self.inertia = 0
 		
 	def update(self):
-		ACTIVE = bge.logic.KX_INPUT_ACTIVE
-		W_KEY = bge.logic.keyboard.inputs[bge.events.WKEY].status[0] == ACTIVE
-		S_KEY = bge.logic.keyboard.inputs[bge.events.SKEY].status[0] == ACTIVE
-		A_KEY = bge.logic.keyboard.inputs[bge.events.AKEY].status[0] == ACTIVE
-		D_KEY = bge.logic.keyboard.inputs[bge.events.DKEY].status[0] == ACTIVE
-		SPACE_KEY = bge.logic.keyboard.inputs[bge.events.SPACEKEY].status[0] == ACTIVE
-	
 		move = 0
 		rotate = 0
-			
-		if W_KEY: move += self.move_speed
-		if S_KEY: move -= self.move_speed
-		if A_KEY: rotate += self.turn_speed
-		if D_KEY: rotate -= self.turn_speed
+		
+		i = 1
+		if self.forward(): move += self.move_speed
+		if self.backward():
+			move -= self.move_speed
+			if self.invert_back: i = -1
+		if self.left(): rotate += self.turn_speed * i
+		if self.right(): rotate -= self.turn_speed * i
 		
 		#Jump only when not touching the ground, the more time you press the key the higher you jump
-		if SPACE_KEY and self.collision_time > 0: self.object.applyForce((0,0, self.jump_force/self.collision_time))
+		if self.jump() and self.collision_time > 0:
+			self.object.applyForce((0,0, self.jump_force))
+			print(self.collision_time)
 		
 		#Movmenet on air is reduced, but not nullified.
 		e = 0.01
@@ -78,12 +91,12 @@ class ThirdPerson(bge.types.KX_PythonComponent):
 	
 		#Normal used to fall on clifs.
 		if normal.z < -0.5:
-			self.collision_time = 5
+			self.collision_time = self.jump_ticks
+			
 			#d = mathutils.Vector((normal.x, normal.y, -normal.z))
 			#d.length = -normal.z*9.8
 			#print(1+normal.z)
 			#self.object.applyForce(d)
-			
 			#render.drawLine(self.object.worldPosition, self.object.worldPosition + d, [1,0,0,1])
 		
 		
