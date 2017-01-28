@@ -1,5 +1,11 @@
 @ECHO OFF
 
+set CWD=%CD%
+cd ..
+cd ..
+set PATH=%PATH%;%CD%\Blender\2.78\python\Scripts;%CD%\Blender\2.78\python\bin
+cd %CWD%
+
 REM Command file for Sphinx documentation
 
 if "%SPHINXBUILD%" == "" (

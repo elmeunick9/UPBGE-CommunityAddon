@@ -1,13 +1,10 @@
-You can get the documentation online at: http://bgecore.royalwebhosting.net/
-(Mirror) http://bgecore.16mb.com/
+You can get the documentation online at: http://coredoc.royalwebhosting.net/
 
-*Documentation for Community Addon not hosted yet!
-
-To generate/update the documentation you need the following dependences:
+To generate/update the documentation you need the following dependences (linux only):
 
 Python3 (Not BGE-Python, but the original): https://www.python.org/downloads/
 Sphinx: "pip install sphinx" or http://sphinx-doc.org/install.html
-Graphviz: http://www.graphviz.org/Download_windows.php (Do not use pip)
+Graphviz: http://www.graphviz.org/ (Maybe)
 
 Make sure that Python(Python3) and Dot (Graphviz) are on the system path or can be executed form anywhere in the system command line.
 
