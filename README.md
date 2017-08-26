@@ -33,6 +33,16 @@ It's not a fork of BGE, I don't touch a single line of Blender's source code. It
 * Recomended: [First steps tutorial](http://coredoc.royalwebhosting.net/ui.html)
 * Recomended: [Build System](http://coredoc.royalwebhosting.net/ui/game_project.html)
 
+## For developers and hackers
+Feel free to join.
+
+- The source code of the addon and the UI Panels is at: `addon/community/`
+- The source code of the BGECore Python API is at: `project/core/`
+  - The components at: `project/core/com/`
+  - The 2DFilters at: `project/core/glsl/`
+- You can execute `make` on the main directory to generate the addon.
+- Consider adding make as a hook for git commits.
+
 ## Copyright
 Robert Planas Jimenez (elmeunick9@gmail.com)
 Licensed under GPL3.0
