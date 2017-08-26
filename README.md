@@ -34,6 +34,10 @@ It's not a fork of BGE, I don't touch a single line of Blender's source code. It
 * Recomended: [First steps tutorial](http://coredoc.royalwebhosting.net/ui.html)
 * Recomended: [Build System](http://coredoc.royalwebhosting.net/ui/game_project.html)
 
+## Screenshots
+![Image](/documentation/source/install4.jpg?raw=true "Screenshot")
+![Image](/documentation/source/install5.jpg?raw=true "Screenshot")
+
 ## For developers and hackers
 Feel free to join.
 
