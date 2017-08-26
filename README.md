@@ -20,6 +20,7 @@ _The documentation generator files are included in the repository. To build with
 * Build system (Windows only, other platforms may be build manually)
   * Launcher with configuration file. _An external program made in C++_
 * Dummy Python API (+UPBGE API) for code editor autocompletion.
+  * Includes online documentation Scraper!
 
 _NOTE: The Python API that this addon provides is called BGECore._
 
