@@ -9,16 +9,16 @@ The Community Addon is a framework for UPBGE. It adds features and provides a ne
 _The documentation generator files are included in the repository. To build with Sphinx, check the folders readme._
 
 ## Features
-* Ready to use components. (Most are simply wrappers to functions of the Python API)
+* Ready to use components.
 * Amazing yet simple keybinding: [See example](http://coredoc.royalwebhosting.net/api/event.html#key-bindings)
-* Tweening capabilities (Sequencer): Wait, LinerInterpolation, etc.
+* Tweening capabilities (Sequencer)
 * Premade 2D Filters (GLSL Shaders): [See green-screen filter demo video](https://youtu.be/iiNVnp1Bo2c), with Shia LaBeouf. DO IT!
-  * UI Panel for selecting 2D Filters graphically and configuring them.
-  * Generic 2D Filter class for easy implementation of custom filters in Python.
+  * UI Panel for 2D Filters.
+  * Generic 2D Filter class.
 * Media API for easy playback of music and sound effects.
 * Save/Load utility fuctions.
-* Build system (Windows only, other platforms may be build manually), replaces "Save as Runtime Executable" addon.
-  * Launcher with configuration file (set BGE flags before starting Blender)
+* Build system (Windows only, other platforms may be build manually)
+  * Launcher with configuration file. _An external program made in C++_
 * Dummy Python API (+UPBGE API) for code editor autocompletion.
 
 _NOTE: The Python API that this addon provides is called BGECore._
