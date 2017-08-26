@@ -6,7 +6,7 @@ The Community Addon is a framework for UPBGE. It adds features and provides a ne
 * API Reference and Tutorials: [http://coredoc.royalwebhosting.net/](http://coredoc.royalwebhosting.net/)
 * Blenderartists thread: [Here](https://blenderartists.org/forum/showthread.php?413239-UPBGE-s-Community-Addon)
 
-_The documentation generator files are included in the repository. To build with Sphix, check the folders readme._
+_The documentation generator files are included in the repository. To build with Sphinx, check the folders readme._
 
 ## Features
 * Premade components for movement, control and media playback. (Most are simply wrappers to functions of the Python API)
