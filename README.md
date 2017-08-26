@@ -35,3 +35,4 @@ It's not a fork of BGE, I don't touch a single line of Blender's source code. It
 
 ## Copyright
 Robert Planas Jimenez (elmeunick9@gmail.com)
+Licensed under GPL3.0
